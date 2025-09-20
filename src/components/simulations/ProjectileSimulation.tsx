@@ -68,8 +68,9 @@ export const ProjectileSimulation: React.FC<ProjectileSimulationProps> = ({
         const currentTime = p.millis();
 
         // Handle start/stop transitions
+        // Handle start/stop transitions
         if (isRunning && !state.wasRunning) {
-          // Just started running
+          // Just started running or resumed
           state.lastFrameTime = currentTime;
           if (!state.isLaunched) {
             state.isLaunched = true;
@@ -78,6 +79,10 @@ export const ProjectileSimulation: React.FC<ProjectileSimulationProps> = ({
             state.y = state.canvasHeight - state.gridSize;
             state.trail = [];
           }
+        }
+        // If paused, set isLaunched to false so that Start can relaunch
+        if (!isRunning && state.wasRunning) {
+          state.isLaunched = false;
         }
         state.wasRunning = isRunning;
         
