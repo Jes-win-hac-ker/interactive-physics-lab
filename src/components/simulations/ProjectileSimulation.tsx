@@ -14,10 +14,11 @@ interface ProjectileSimulationProps {
   }) => void;
 }
 
-export const ProjectileSimulation: React.FC<ProjectileSimulationProps> = ({
+export const ProjectileSimulation: React.FC<ProjectileSimulationProps & { key?: string | number }> = ({
   params,
   isRunning,
-  onMeasurement
+  onMeasurement,
+  key
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const p5InstanceRef = useRef<p5 | null>(null);
@@ -47,7 +48,11 @@ export const ProjectileSimulation: React.FC<ProjectileSimulationProps> = ({
   };
 
   useEffect(() => {
-    if (!containerRef.current || p5InstanceRef.current) return;
+    if (!containerRef.current) return;
+    if (p5InstanceRef.current) {
+      p5InstanceRef.current.remove();
+      p5InstanceRef.current = null;
+    }
 
     const sketch = (p: p5) => {
       p.setup = () => {
@@ -233,7 +238,7 @@ export const ProjectileSimulation: React.FC<ProjectileSimulationProps> = ({
       };
     };
 
-    p5InstanceRef.current = new p5(sketch);
+  p5InstanceRef.current = new p5(sketch);
 
     return () => {
       if (p5InstanceRef.current) {
@@ -241,7 +246,7 @@ export const ProjectileSimulation: React.FC<ProjectileSimulationProps> = ({
         p5InstanceRef.current = null;
       }
     };
-  }, []);
+  }, [key]);
 
   // Handle resets
   useEffect(() => {
