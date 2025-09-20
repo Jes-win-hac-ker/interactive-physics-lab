@@ -4,15 +4,15 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/interactive-physics-lab/' : '/',
+export default defineConfig(() => ({
+  base: '/interactive-physics-lab/',
   server: {
     host: "::",
     port: 8080,
   },
   plugins: [
     react(), 
-    mode === "development" && componentTagger()
+    componentTagger()
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: mode === 'production' ? 'terser' : false,
+    minify: 'terser',
     target: 'es2015',
     rollupOptions: {
       output: {

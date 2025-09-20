@@ -80,6 +80,9 @@ jobs:
         continue-on-error: true
 
       - name: Build with fallbacks
+        env:
+          NODE_ENV: production
+          VITE_BASE_URL: /interactive-physics-lab/
         run: |
           echo "Building application..."
           # Primary build attempt
